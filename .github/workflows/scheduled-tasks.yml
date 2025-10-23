@@ -1,0 +1,27 @@
+name: Scheduled Tasks
+
+on:
+  schedule:
+    - cron: '0 0 * * *'   # Runs every day at midnight (UTC)
+  workflow_dispatch:        # Allows manual trigger for testing
+
+jobs:
+  daily-maintenance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run Scheduled Maintenance
+        run: |
+          echo "Running daily maintenance tasks..."
+          mkdir -p maintenance_logs
+          echo "Maintenance completed successfully at $(date)" > maintenance_logs/maintenance_log.txt
+
+      - name: Upload Maintenance Log
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-maintenance-log
+          path: maintenance_logs/
+
